@@ -1,19 +1,40 @@
 plugins {
+    id 'kotlin-kapt'
     id 'com.android.application'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
-    compileSdk 31
+    compileSdk buildConfig.compileSdk
 
     defaultConfig {
         applicationId "com.bignerdranch.android.arcticfox"
-        minSdk 21
-        targetSdk 31
+        minSdk buildConfig.minSdk
+        targetSdk buildConfig.targetSdk
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+        mlModelBinding true
+    }
+
+    androidResources {
+        noCompress 'tflite'
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     buildTypes {
@@ -22,22 +43,48 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 dependencies {
+//    implementation project(":database")
+//    implementation project(":core-models")
 
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation deps.kotlin.stdlib
+    implementation deps.kotlin.coroutines
+    implementation deps.kotlin.coroutines_android
+
+    implementation deps.android.androidx_core
+    implementation deps.android.appcompat
+    implementation deps.android.recyclerview
+    implementation deps.google.material
+    implementation deps.android.constraintlayout
+    implementation deps.android.fragment
+    implementation deps.android.lifecycle
+    implementation deps.android.activity
+    implementation deps.android.datastore
+    implementation deps.android.room.runtime
+    implementation deps.android.room.ktx
+
+    implementation deps.android.navigation.fragment
+    implementation deps.android.navigation.ui
+
+    implementation deps.android.camerax.core
+    implementation deps.android.camerax.camera2
+    implementation deps.android.camerax.lifecycle
+    implementation deps.android.camerax.view
+
+    implementation deps.google.mlkit_barcode
+    implementation deps.kotlin.coroutines_play_services
+
+    implementation deps.tensorflow_lite.support
+    implementation deps.tensorflow_lite.metadata
+    implementation deps.tensorflow_lite.gpu
+
+    implementation deps.coil
+
+    testImplementation deps.junit
+
+    androidTestImplementation deps.android.test.runner
+    androidTestImplementation deps.android.test.rules
+    androidTestImplementation deps.android.test.junit
 }
